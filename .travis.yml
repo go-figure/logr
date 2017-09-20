@@ -1,0 +1,9 @@
+language: go
+go:
+  - stable
+  - master
+install:
+  - go get github.com/mattn/goveralls
+  - go get -v -t ./...
+script:
+  - $HOME/gopath/bin/goveralls -service=travis-ci
