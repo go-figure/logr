@@ -50,15 +50,6 @@ func TestWriterSink(t *testing.T) {
 		KV:    kv,
 	})
 
-	sink.Complete("testing", "event", Success, timing, kv)
-	checkEntry(t, &buf, testWriterEntry{
-		Job:    "testing",
-		Event:  "event",
-		Status: Success,
-		Timing: timing,
-		KV:     kv,
-	})
-
 	sink.Timing("testing", "event", timing, kv)
 	checkEntry(t, &buf, testWriterEntry{
 		Job:    "testing",
@@ -74,6 +65,14 @@ func TestWriterSink(t *testing.T) {
 		Gauge: gauge,
 		KV:    kv,
 	})
+
+	sink.Complete("testing", Success, timing, kv)
+	checkEntry(t, &buf, testWriterEntry{
+		Job:    "testing",
+		Status: Success,
+		Timing: timing,
+		KV:     kv,
+	})
 }
 
 func checkEntry(t *testing.T, buf *bytes.Buffer, entry testWriterEntry) {
@@ -85,7 +84,10 @@ func checkEntry(t *testing.T, buf *bytes.Buffer, entry testWriterEntry) {
 	require.WithinDuration(t, time.Now(), timestamp, time.Millisecond, "timestamp should be time.Now")
 
 	require.Contains(t, line, "job:"+entry.Job)
-	require.Contains(t, line, "event:"+entry.Event)
+
+	if len(entry.Event) > 0 {
+		require.Contains(t, line, "event:"+entry.Event)
+	}
 
 	if len(entry.Status) > 0 {
 		require.Contains(t, line, "status:"+entry.Status)

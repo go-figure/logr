@@ -28,17 +28,17 @@ func TestTeeSink(t *testing.T) {
 		sink := mock.NewMockSink(ctrl)
 		sink.EXPECT().Event("testing", "event", kv)
 		sink.EXPECT().Error("testing", "event", err, kv)
-		sink.EXPECT().Complete("testing", "event", logr.Success, timing, kv)
 		sink.EXPECT().Timing("testing", "event", timing, kv)
 		sink.EXPECT().Gauge("testing", "event", gauge, kv)
+		sink.EXPECT().Complete("testing", logr.Success, timing, kv)
 		ts.Add(sink)
 	}
 
 	ts.Event("testing", "event", kv)
 	ts.Error("testing", "event", err, kv)
-	ts.Complete("testing", "event", logr.Success, timing, kv)
 	ts.Timing("testing", "event", timing, kv)
 	ts.Gauge("testing", "event", gauge, kv)
+	ts.Complete("testing", logr.Success, timing, kv)
 }
 
 func TestKVSink(t *testing.T) {
@@ -57,9 +57,9 @@ func TestKVSink(t *testing.T) {
 	sink := mock.NewMockSink(ctrl)
 	sink.EXPECT().Event("testing", "event", kv)
 	sink.EXPECT().Error("testing", "event", err, kv)
-	sink.EXPECT().Complete("testing", "event", logr.Success, timing, kv)
 	sink.EXPECT().Timing("testing", "event", timing, kv)
 	sink.EXPECT().Gauge("testing", "event", gauge, kv)
+	sink.EXPECT().Complete("testing", logr.Success, timing, kv)
 
 	kvs := logr.KVSink{
 		Sink: sink,
@@ -73,8 +73,8 @@ func TestKVSink(t *testing.T) {
 
 	kvs.Event("testing", "event", kv)
 	kvs.Error("testing", "event", err, kv)
-	kvs.Complete("testing", "event", logr.Success, timing, kv)
 	kvs.Timing("testing", "event", timing, kv)
+	kvs.Complete("testing", logr.Success, timing, kv)
 
 	tKV := kvs.KV
 	tKV["key3"] = true

@@ -27,9 +27,9 @@ func TestJob(t *testing.T) {
 	sink.EXPECT().Event("testing", "job_start", nil)
 	sink.EXPECT().Event("testing", "event", kvs)
 	sink.EXPECT().Error("testing", "event", err, kvs)
-	sink.EXPECT().Complete("testing", "event", logr.Success, gomock.Any(), kvs)
 	sink.EXPECT().Timing("testing", "event", timing, kvs)
 	sink.EXPECT().Gauge("testing", "event", gauge, kvs)
+	sink.EXPECT().Complete("testing", logr.Success, gomock.Any(), kvs)
 
 	job := logr.NewJob(sink, "testing", nil)
 	job.KV = logr.KV{
@@ -43,9 +43,9 @@ func TestJob(t *testing.T) {
 
 	job.Event("event", kvs)
 	job.Error("event", err, kvs)
-	job.Complete("event", logr.Success, kvs)
 	job.Timing("event", timing, kvs)
 	job.Gauge("event", gauge, kvs)
+	job.Complete(logr.Success, kvs)
 
 	job = logr.NewJob(nil, "testing", nil)
 	require.Equal(t, logr.Discard, job.Sink, "providing nil as a sink to NewJob should set the Sink to Discard")

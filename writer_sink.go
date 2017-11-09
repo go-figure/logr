@@ -50,13 +50,6 @@ func (s WriterSink) Error(job, event string, err error, kv KV) {
 	)
 }
 
-func (s WriterSink) Complete(job, event string, status CompletionStatus, timing time.Duration, kv KV) {
-	fmt.Fprintf(s.w, "[%s] job:%s event:%s status:%s, timing:%s kv:[%s]\n",
-		time.Now().Format(time.RFC3339Nano),
-		job, event, status, timing.String(), formattedKV(kv),
-	)
-}
-
 func (s WriterSink) Timing(job, event string, timing time.Duration, kv KV) {
 	fmt.Fprintf(s.w, "[%s] job:%s event:%s timing:%s kv:[%s]\n",
 		time.Now().Format(time.RFC3339Nano),
@@ -68,5 +61,12 @@ func (s WriterSink) Gauge(job, event string, value float64, kv KV) {
 	fmt.Fprintf(s.w, "[%s] job:%s event:%s gauge:%g kv:[%s]\n",
 		time.Now().Format(time.RFC3339Nano),
 		job, event, value, formattedKV(kv),
+	)
+}
+
+func (s WriterSink) Complete(job string, status CompletionStatus, timing time.Duration, kv KV) {
+	fmt.Fprintf(s.w, "[%s] job:%s status:%s, timing:%s kv:[%s]\n",
+		time.Now().Format(time.RFC3339Nano),
+		job, status, timing.String(), formattedKV(kv),
 	)
 }

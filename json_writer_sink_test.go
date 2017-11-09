@@ -12,13 +12,13 @@ import (
 )
 
 type testJSONEntry struct {
-	Timestamp string               `json:"timestamp"`
-	Job       string               `json:"job"`
-	Event     string               `json:"event"`
+	Timestamp string                `json:"timestamp"`
+	Job       string                `json:"job"`
+	Event     string                `json:"event"`
 	Status    logr.CompletionStatus `json:"status,omitempty"`
-	Error     string               `json:"error,omitempty"`
-	Timing    time.Duration        `json:"timing,omitempty"`
-	Gauge     float64              `json:"gauge,omitempty"`
+	Error     string                `json:"error,omitempty"`
+	Timing    time.Duration         `json:"timing,omitempty"`
+	Gauge     float64               `json:"gauge,omitempty"`
 	KV        logr.KV               `json:"kv"`
 }
 
@@ -50,15 +50,6 @@ func TestJSONWriterSink(t *testing.T) {
 		KV:    kv,
 	})
 
-	sink.Complete("testing", "event", logr.Success, timing, kv)
-	checkJSONEntry(t, &buf, testJSONEntry{
-		Job:    "testing",
-		Event:  "event",
-		Status: logr.Success,
-		Timing: timing,
-		KV:     kv,
-	})
-
 	sink.Timing("testing", "event", timing, kv)
 	checkJSONEntry(t, &buf, testJSONEntry{
 		Job:    "testing",
@@ -73,6 +64,14 @@ func TestJSONWriterSink(t *testing.T) {
 		Event: "event",
 		Gauge: gauge,
 		KV:    kv,
+	})
+
+	sink.Complete("testing", logr.Success, timing, kv)
+	checkJSONEntry(t, &buf, testJSONEntry{
+		Job:    "testing",
+		Status: logr.Success,
+		Timing: timing,
+		KV:     kv,
 	})
 }
 

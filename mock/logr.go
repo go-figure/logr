@@ -35,13 +35,13 @@ func (m *MockSink) EXPECT() *MockSinkMockRecorder {
 }
 
 // Complete mocks base method
-func (m *MockSink) Complete(arg0, arg1 string, arg2 logr.CompletionStatus, arg3 time.Duration, arg4 logr.KV) {
-	m.ctrl.Call(m, "Complete", arg0, arg1, arg2, arg3, arg4)
+func (m *MockSink) Complete(arg0 string, arg1 logr.CompletionStatus, arg2 time.Duration, arg3 logr.KV) {
+	m.ctrl.Call(m, "Complete", arg0, arg1, arg2, arg3)
 }
 
 // Complete indicates an expected call of Complete
-func (mr *MockSinkMockRecorder) Complete(arg0, arg1, arg2, arg3, arg4 interface{}) *gomock.Call {
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Complete", reflect.TypeOf((*MockSink)(nil).Complete), arg0, arg1, arg2, arg3, arg4)
+func (mr *MockSinkMockRecorder) Complete(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Complete", reflect.TypeOf((*MockSink)(nil).Complete), arg0, arg1, arg2, arg3)
 }
 
 // Error mocks base method

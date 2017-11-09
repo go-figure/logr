@@ -43,14 +43,14 @@ func (s JSONWriterSink) Error(job, event string, err error, kv KV) {
 	s.encode(&jsonEntry{Job: job, Event: event, Error: err.Error(), KV: kv})
 }
 
-func (s JSONWriterSink) Complete(job, event string, status CompletionStatus, timing time.Duration, kv KV) {
-	s.encode(&jsonEntry{Job: job, Event: event, Status: status, Timing: timing, KV: kv})
-}
-
 func (s JSONWriterSink) Timing(job, event string, timing time.Duration, kv KV) {
 	s.encode(&jsonEntry{Job: job, Event: event, Timing: timing, KV: kv})
 }
 
 func (s JSONWriterSink) Gauge(job, event string, gauge float64, kv KV) {
 	s.encode(&jsonEntry{Job: job, Event: event, Gauge: gauge, KV: kv})
+}
+
+func (s JSONWriterSink) Complete(job string, status CompletionStatus, timing time.Duration, kv KV) {
+	s.encode(&jsonEntry{Job: job, Status: status, Timing: timing, KV: kv})
 }
